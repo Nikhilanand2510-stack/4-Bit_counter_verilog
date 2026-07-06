@@ -1,0 +1,34 @@
+module tb_counter_4bit;
+    reg clk;
+    reg rst;
+    wire [3:0] count;
+
+    // Instantiate the design
+    counter_4bit uut (
+        .clk(clk),
+        .rst(rst),
+        .count(count)
+    );
+
+    // Generate a clock signal
+    initial begin
+        clk = 0;
+        forever #5 clk = ~clk;
+    end
+
+    // Apply test vectors and generate waveform
+    initial begin
+        // Creates the waveform file
+        $dumpfile("dump.vcd"); 
+        $dumpvars(0, tb_counter_4bit);
+
+        // Apply reset
+        rst = 1; 
+        #10; 
+        rst = 0; 
+
+        // Let it run for enough time to see a full 16-state cycle
+        #160; 
+        $finish;
+    end
+endmodule
